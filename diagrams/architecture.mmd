@@ -1,7 +1,7 @@
 %% VibeMatch system architecture
 %% Render: paste into https://mermaid.live or view on GitHub (diagrams/architecture.md)
 flowchart TD
-    U([User request<br/>e.g. 'upbeat k-pop for a morning run']) --> G1
+    U(["User request<br/>e.g. upbeat k-pop for a morning run"]) --> G1
 
     subgraph AGENT["VibeMatch agent (src/agent.py) - orchestration loop"]
         G1{{"1. Input guardrail<br/>empty / too long / injection / off-topic"}}
@@ -17,17 +17,17 @@ flowchart TD
         CF["8. Confidence score 0-1"]
     end
 
-    G1 -- blocked --> BLK([Refusal message])
+    G1 -- blocked --> BLK(["Refusal message"])
     G1 -- ok --> P
     P --> V --> R --> C
-    C -- "no: low parse confidence" --> Q([Clarifying question])
-    Q -- user answers --> HUMAN
+    C -- "no: low parse confidence" --> Q(["Clarifying question"])
+    Q -- "user answers: re-run with added detail" --> P
     C -- yes --> S --> VF
     VF -- "fail and strategies left" --> RT --> S
     VF -- "pass or best effort" --> E --> HC
     HC -- "rejected" --> TPL["Template explanation"] --> CF
     HC -- "ok" --> CF
-    CF --> OUT([Top 5 songs + reasons with sources<br/>+ explanation + confidence + check results])
+    CF --> OUT(["Top 5 songs + reasons with sources<br/>+ explanation + confidence + check results"])
 
     OUT --> HUMAN[/"Human in the loop<br/>like / dislike / clarify"/]
     HUMAN -- "profile update or exclusion" --> S
@@ -45,7 +45,7 @@ flowchart TD
 
     subgraph QA["Testing and monitoring"]
         LOG[("logs/vibematch.jsonl<br/>full trace of every run")]
-        T["pytest: 56 unit + integration tests<br/>(fake LLM, no network)"]
+        T["pytest: 57 unit + integration tests<br/>(fake LLM, no network)"]
         EV["src/evaluate.py: 23 labeled cases<br/>agent vs Module 3 baseline, consistency"]
     end
     CF -.-> LOG
