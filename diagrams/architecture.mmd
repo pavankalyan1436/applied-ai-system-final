@@ -1,0 +1,55 @@
+%% VibeMatch system architecture
+%% Render: paste into https://mermaid.live or view on GitHub (diagrams/architecture.md)
+flowchart TD
+    U([User request<br/>e.g. 'upbeat k-pop for a morning run']) --> G1
+
+    subgraph AGENT["VibeMatch agent (src/agent.py) - orchestration loop"]
+        G1{{"1. Input guardrail<br/>empty / too long / injection / off-topic"}}
+        P["2. Parser<br/>Gemini JSON  -or-  keyword fallback"]
+        V{{"3. Profile guardrail<br/>repair values, drop invented labels"}}
+        R["4. Retriever (RAG)<br/>TF-IDF over knowledge notes"]
+        C{"5. Confident enough?"}
+        S["6. Scorer (tool)<br/>score_song + related-label credit"]
+        VF{{"Verify results<br/>6 automatic checks"}}
+        RT["Retry with next strategy<br/>broaden retrieval / prioritize energy"]
+        E["7. Explainer<br/>Gemini  -or-  template"]
+        HC{{"Hallucination check<br/>only recommended titles allowed"}}
+        CF["8. Confidence score 0-1"]
+    end
+
+    G1 -- blocked --> BLK([Refusal message])
+    G1 -- ok --> P
+    P --> V --> R --> C
+    C -- "no: low parse confidence" --> Q([Clarifying question])
+    Q -- user answers --> HUMAN
+    C -- yes --> S --> VF
+    VF -- "fail and strategies left" --> RT --> S
+    VF -- "pass or best effort" --> E --> HC
+    HC -- "rejected" --> TPL["Template explanation"] --> CF
+    HC -- "ok" --> CF
+    CF --> OUT([Top 5 songs + reasons with sources<br/>+ explanation + confidence + check results])
+
+    OUT --> HUMAN[/"Human in the loop<br/>like / dislike / clarify"/]
+    HUMAN -- "profile update or exclusion" --> S
+
+    subgraph DATA["Data sources"]
+        KB[("knowledge/<br/>genres.md, moods.md, activities.md")]
+        CAT[("data/songs.csv<br/>20-song catalog")]
+        LLM[["Gemini API<br/>(optional)"]]
+    end
+    KB -.-> R
+    CAT -.-> S
+    CAT -.-> VF
+    LLM -.-> P
+    LLM -.-> E
+
+    subgraph QA["Testing and monitoring"]
+        LOG[("logs/vibematch.jsonl<br/>full trace of every run")]
+        T["pytest: 56 unit + integration tests<br/>(fake LLM, no network)"]
+        EV["src/evaluate.py: 23 labeled cases<br/>agent vs Module 3 baseline, consistency"]
+    end
+    CF -.-> LOG
+    BLK -.-> LOG
+    Q -.-> LOG
+    T -. checks .-> AGENT
+    EV -. measures .-> AGENT

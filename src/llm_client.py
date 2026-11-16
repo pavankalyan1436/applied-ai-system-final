@@ -13,6 +13,8 @@ VIBEMATCH_OFFLINE=1 is set; callers then use the deterministic fallbacks.
 import json
 import logging
 import os
+import re
+import time
 from typing import Dict, List, Optional
 
 log = logging.getLogger("vibematch.llm")
@@ -55,13 +57,36 @@ class GeminiClient:
 
         self.client = genai.Client(api_key=api_key)
         self.model = model or os.getenv("GEMINI_MODEL", DEFAULT_MODEL)
+        self.min_interval = float(os.getenv("GEMINI_MIN_INTERVAL", "0"))
+        self._last_call = 0.0
 
     def _generate(self, prompt: str, json_mode: bool = False) -> str:
+        """
+        One Gemini call with two reliability guards:
+          - pacing: wait so calls are at least GEMINI_MIN_INTERVAL seconds apart
+            (the free tier allows 15 requests/minute; the evaluator sets 4.5s)
+          - one retry on HTTP 429, after the delay the API asks for (max 20s)
+        Any other error is raised so the caller can fall back.
+        """
         config = {"temperature": 0.2}
         if json_mode:
             config["response_mime_type"] = "application/json"
-        response = self.client.models.generate_content(model=self.model, contents=prompt, config=config)
-        return (response.text or "").strip()
+        for attempt in range(2):
+            wait = self.min_interval - (time.monotonic() - self._last_call)
+            if wait > 0:
+                time.sleep(wait)
+            self._last_call = time.monotonic()
+            try:
+                response = self.client.models.generate_content(model=self.model, contents=prompt, config=config)
+                return (response.text or "").strip()
+            except Exception as exc:
+                if getattr(exc, "code", None) != 429 or attempt == 1:
+                    raise
+                match = re.search(r"retry in ([\d.]+)s", str(exc))
+                delay = min(20.0, float(match.group(1)) + 0.5) if match else 5.0
+                log.warning("Gemini rate limit hit; retrying in %.1fs", delay)
+                time.sleep(delay)
+        raise RuntimeError("unreachable")
 
     def parse_request(self, request: str, genres: List[str], moods: List[str]) -> Dict:
         """Return the model's profile dict. Raises on bad JSON (caller falls back)."""

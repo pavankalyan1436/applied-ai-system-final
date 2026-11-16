@@ -108,7 +108,8 @@ def parse_request(text: str, retriever: Retriever, llm=None) -> ParseResult:
                 conf = 0.5
             return ParseResult(data, "llm", round(conf, 2), ["parsed by Gemini"])
         except Exception as exc:
-            log.warning("LLM parse failed (%s); falling back to keyword parser", exc)
+            log.warning("LLM parse failed (%s: %s); falling back to keyword parser",
+                        type(exc).__name__, str(exc).splitlines()[0][:80] if str(exc) else "")
             result = keyword_parse(text, retriever)
             result.notes.insert(0, f"LLM parse failed ({type(exc).__name__}); used keyword fallback")
             return result
