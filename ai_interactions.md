@@ -405,8 +405,10 @@ The commit history shows each phase separately.
 **What I verified myself:**
 - Ran the retriever on my own queries (`heavy gym music`, `rainy day jazz`, `reggaeton party`, `sleepy piano`).
   `sleepy piano` missed the sleep note entirely. That led to adding stemming, which fixed it (similarity 0.61).
-- Ran the CLI and the test suite myself after each phase.
-- <!-- TODO (you): add anything else you checked or changed by hand -->
+- Ran the CLI (`python -m src.cli`) and the test suite (`pytest`) myself to see the results.
+- Created the empty public GitHub repo myself, and learned the `git add` / `commit` / `push` flow along the way (including what "nothing to commit, working tree clean" means).
+- Switched from my old Module 3 virtual environment to this project's own `.venv`, and confirmed it with `which python`, so nothing I installed touched my Module 3 submission.
+- Copied my Gemini API key from my DocuBot `.env` myself, so the key never passed through the AI assistant.
 
 **Problems the agent's own testing caught** (each one changed the design):
 1. The first version passed every check for "Sad but energetic blues", even though the top pick had energy 0.40 against a requested 0.85. We added the `top_pick_energy_fits` check.

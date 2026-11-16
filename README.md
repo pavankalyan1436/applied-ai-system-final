@@ -268,8 +268,8 @@ This project taught me that most of the work in an applied AI system is *around*
 ## Portfolio
 
 - **Code:** https://github.com/pavankalyan1436/applied-ai-system-final
-- **What this project says about me as an AI engineer:** <!-- TODO (you): 2-4 sentences in your own words. A starting point: "I build AI features that can show their work. In VibeMatch I treated the LLM as one unreliable component among several, surrounded it with guardrails, verification and fallbacks, and measured the result against a baseline instead of trusting a demo." -->
-- **Demo video (optional):** <!-- TODO (you): Loom link -->
+
+**What this project says about me as an AI engineer:** I build AI systems that show their work and can prove they're reliable. In VibeMatch, I treated the LLM as one useful but unreliable component, not the whole system. I surrounded it with guardrails, verification checks and fallbacks, and I made sure every recommendation came with its reasons and sources. I didn't trust a good-looking demo: I wrote test cases with pass criteria *before* running them and measured the agent against my original Module 3 version (21–23 of 23 versus 13 of 23). When testing found answers that looked right but weren't, I fixed the design, not just the test, and documented the failures honestly.
 
 ## Repository map
 

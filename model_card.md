@@ -110,8 +110,7 @@ What I would add for real users: a moderation API in place of regex patterns, ra
 
 ### Human evaluation
 
-I reviewed the outputs myself, judging whether a listener would accept each top pick.
-<!-- TODO (you): change any verdicts you disagree with; they should be your own judgment. -->
+I reviewed these outputs myself and judged whether a real listener would be happy with the results, which isn't the same as whether the automatic checks passed. Overall: **4 Pass, 1 Partial, 1 Fail.**
 
 | Test input | Evaluation criteria | Result |
 |---|---|---|
@@ -136,18 +135,18 @@ I reviewed the outputs myself, judging whether a listener would accept each top 
 
 ## AI collaboration
 
-I built this with **Claude Code** (an AI coding agent) working in my repository. I asked it to go phase by phase and guide me step by step, and I ran the retriever, the CLI and the tests myself between phases. The full process and the agent traces are in [`ai_interactions.md`](ai_interactions.md).
+I built this project with **Claude Code**, an AI coding agent that worked directly in my repository. I didn't want it to build everything at once, so I asked it to work in four phases and guide me step by step. Between phases I ran the code myself: I tried the retriever on my own queries, ran the CLI and the tests, and set up the repo, the virtual environment and my API key on my own. The AI wrote most of the code. My job was to decide what the system should do, check that it actually did it, and push back when the result looked right but wasn't. The full process and the agent traces are in [`ai_interactions.md`](ai_interactions.md).
 
-<!-- TODO (you): The two examples below are real moments from this project. Keep them only if they match your view, and rewrite them in your own words. -->
+**A suggestion I accepted: a fallback for every Gemini step.** The AI suggested that if Gemini is unavailable, a simple keyword parser should read the request and a template should write the explanation. I accepted it right away because it means anyone can run my project without an API key, and my tests and evaluation give the same results every time. It turned out to matter more than I expected. During evaluation, Gemini's free tier rate-limited me, and once it returned a 503 outage, but the app never crashed, because the fallback took over each time.
 
-**A suggestion I accepted: a deterministic fallback for every LLM step.** The AI proposed that the keyword parser and template explanations take over whenever Gemini is unavailable. I accepted it because it keeps the app runnable without a key, makes tests and evaluation reproducible, and kept the system working when the free tier rate-limited us and when Gemini returned a 503 during evaluation.
+**A suggestion I did not accept as written: the "prioritize energy" retry.** When the agent's results failed the energy check, the AI's first retry strategy cut the genre and mood weights in half so energy would win. On "Sad but energetic blues" this returned a happy pop song and dropped the only sad blues song in the catalog. Technically it passed the energy check, but it threw away what the listener actually asked for, so I didn't accept it. We changed the design: the agent now has to keep a song of the requested genre, and that rule outranks every other check. When a request can't be fully satisfied, the agent keeps the best match and tells the user which part it couldn't meet, instead of hiding it behind a passing check.
 
-**A suggestion I did not accept as written: the "prioritize energy" retry.** The first version of this retry halved the genre and mood weights so energy would win. For "Sad but energetic blues" it returned happy pop and removed the only sad blues song, so it technically passed the energy check while ignoring what the listener asked for. I rejected that behavior. We added a `keeps_requested_label` check and ranked attempts so keeping the requested genre comes first. Now the agent keeps the best match and **reports** the conflict instead of hiding it.
+**Other times AI output needed checking:**
+- The Gemini model name we first used (`gemini-flash-lite-latest`, carried over from my DocuBot project) returned a 404 error. We listed the available models and switched to `gemini-3.5-flash-lite`.
+- The first Gemini evaluation reported "6 rejected explanations", which looked like hallucinations. When we checked the logs, every one was actually a rate-limit error. We changed the report to count API errors and real hallucinations separately. After that, there were **0** hallucinations.
+- The AI noticed that this project's `.gitignore` didn't exclude `.env`. My next `git add .` would have pushed my Gemini key to a public repo. We fixed it before the key was ever committed.
 
-**Other places I changed or checked AI output:**
-- The AI's first Gemini model name (`gemini-flash-lite-latest`, copied from my DocuBot project) returned 404. We listed the available models and switched to `gemini-3.5-flash-lite`.
-- The AI's first evaluation report counted rate-limit errors as hallucinations. I questioned the "6 rejected explanations", and the logs showed all of them were API errors.
-- The AI noticed that my `.gitignore` didn't exclude `.env`, so my next `git add .` would have pushed my API key to a public repo. We fixed it before the key was ever committed.
+The lesson I took from this: AI-written code and AI-written reports can look correct and still be wrong, so I learned to check the actual output and logs instead of trusting the summary.
 
 ---
 
