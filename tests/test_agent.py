@@ -172,6 +172,15 @@ def test_agent_retry_strategy_can_fix_energy(offline_agent):
     assert all(r.checks.values())
 
 
+def test_agent_keeps_requested_genre_even_when_mood_matches_elsewhere():
+    # Regression: Gemini parsed "acoustic folk for maximum energy" as folk + intense.
+    # The old check accepted Gym Hero (intense) and returned zero folk songs.
+    llm = FakeLLM(profile={"genre": "folk", "mood": "intense", "energy": 1.0, "likes_acoustic": True, "confidence": 0.9})
+    r = VibeMatchAgent(llm=llm).run("acoustic folk for maximum energy")
+    assert any(s["genre"] == "folk" for s in r.recommendations)
+    assert r.checks["keeps_requested_label"] is True
+
+
 def test_agent_does_not_check_energy_the_user_never_gave(offline_agent):
     r = offline_agent.run("happy pop")
     assert r.strategy == "baseline" and all(r.checks.values())

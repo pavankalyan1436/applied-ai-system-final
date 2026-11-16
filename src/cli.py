@@ -18,7 +18,7 @@ import sys
 from src.agent import VibeMatchAgent, apply_feedback
 
 CHECK_LABELS = {
-    "keeps_requested_label": "keeps a song with your genre/mood",
+    "keeps_requested_label": "keeps your requested genre (or mood)",
     "all_songs_in_catalog": "every song exists in the catalog",
     "enough_results": "returned a full list",
     "energy_fits_majority": "most songs fit your energy",

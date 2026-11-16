@@ -149,7 +149,9 @@ class VibeMatchAgent:
             checks = self._verify(recs, profile, energy_known)
             trace.append({"step": "score_and_verify", "strategy": strategy["name"], "checks": checks,
                           "top": [(r["title"], r["score"]) for r in recs[:3]]})
-            key = (sum(checks.values()), recs[0]["score"] if recs else 0)
+            # Rank attempts: keeping the user's requested label outranks every other
+            # check, then the number of checks passed, then the top score.
+            key = (checks["keeps_requested_label"], sum(checks.values()), recs[0]["score"] if recs else 0)
             if best is None or key > best[0]:
                 best = (key, strategy["name"], recs, checks)
             if all(checks.values()):
@@ -176,9 +178,16 @@ class VibeMatchAgent:
         never asked for.
         """
         fits = [not energy_known or abs(r["energy"] - profile["energy"]) <= ENERGY_TOLERANCE for r in recs]
-        # If the user named a genre/mood the catalog has, a retry must not drop it entirely
-        wanted = [(key, profile[key]) for key in ("genre", "mood") if profile.get(key) in {s[key] for s in self.songs}]
-        keeps_label = not wanted or any(r[key] == value for r in recs for key, value in wanted)
+        # A retry must not drop what the user asked for. The genre is the most explicit
+        # request, so if the catalog has it, a song of that genre must survive; only when
+        # it doesn't is a mood match enough. (Accepting either label let a Gemini-parsed
+        # "folk + intense" request return zero folk songs; see README Testing summary.)
+        if profile.get("genre") in {s["genre"] for s in self.songs}:
+            keeps_label = any(r["genre"] == profile["genre"] for r in recs)
+        elif profile.get("mood") in {s["mood"] for s in self.songs}:
+            keeps_label = any(r["mood"] == profile["mood"] for r in recs)
+        else:
+            keeps_label = True
         return {
             "keeps_requested_label": keeps_label,
             "all_songs_in_catalog": not unknown_titles(recs, self.songs),
