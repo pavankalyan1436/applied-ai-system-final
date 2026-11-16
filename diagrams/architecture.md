@@ -48,7 +48,7 @@ flowchart TD
 
     subgraph QA["Testing and monitoring"]
         LOG[("logs/vibematch.jsonl<br/>full trace of every run")]
-        T["pytest: 57 unit + integration tests<br/>(fake LLM, no network)"]
+        T["pytest: 68 unit + integration tests<br/>(fake LLM, no network)"]
         EV["src/evaluate.py: 23 labeled cases<br/>agent vs Module 3 baseline, consistency"]
     end
     CF -.-> LOG

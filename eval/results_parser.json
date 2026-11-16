@@ -1,0 +1,1214 @@
+{
+  "zero-shot Gemini": {
+    "summary": {
+      "style": "zero-shot Gemini",
+      "field_accuracy": 0.957,
+      "fields": "45/47",
+      "cases_all_correct": "14/16",
+      "invented_moods": 0,
+      "errors": 0,
+      "consistency": "14/16",
+      "per_field": {
+        "genre": "13/13",
+        "mood": "14/16",
+        "energy": "14/14",
+        "likes_acoustic": "3/3",
+        "confidence": "1/1"
+      }
+    },
+    "rows": [
+      {
+        "id": "P1",
+        "input": "mellow acoustic guitar songs for a lazy sunday",
+        "output": {
+          "genre": "folk",
+          "mood": "relaxed",
+          "energy": 0.2,
+          "likes_acoustic": true,
+          "confidence": 0.95
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": true,
+          "confidence": null
+        },
+        "correct": 4,
+        "graded": 4,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P2",
+        "input": "aggressive music to blow off steam",
+        "output": {
+          "genre": null,
+          "mood": "aggressive",
+          "energy": 0.9,
+          "likes_acoustic": false,
+          "confidence": 0.8
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P3",
+        "input": "focus music for coding late at night",
+        "output": {
+          "genre": "ambient",
+          "mood": "focused",
+          "energy": 0.3,
+          "likes_acoustic": false,
+          "confidence": 0.9
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P4",
+        "input": "feel-good summer hits",
+        "output": {
+          "genre": "pop",
+          "mood": "carefree",
+          "energy": 0.8,
+          "likes_acoustic": false,
+          "confidence": 0.75
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P5",
+        "input": "heartbreak ballads",
+        "output": {
+          "genre": "pop",
+          "mood": "sad",
+          "energy": 0.3,
+          "likes_acoustic": null,
+          "confidence": 0.8
+        },
+        "fields": {
+          "genre": null,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 2,
+        "graded": 2,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P6",
+        "input": "salsa night",
+        "output": {
+          "genre": "latin",
+          "mood": "carefree",
+          "energy": 0.8,
+          "likes_acoustic": false,
+          "confidence": 0.85
+        },
+        "fields": {
+          "genre": true,
+          "mood": false,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 2,
+        "graded": 3,
+        "all_correct": false,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P7",
+        "input": "dreamy 80s synths for a night drive",
+        "output": {
+          "genre": "synthwave",
+          "mood": "nostalgic",
+          "energy": 0.5,
+          "likes_acoustic": false,
+          "confidence": 0.95
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P8",
+        "input": "classical piano to fall asleep to",
+        "output": {
+          "genre": "classical",
+          "mood": "peaceful",
+          "energy": 0.1,
+          "likes_acoustic": true,
+          "confidence": 0.95
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": true,
+          "confidence": null
+        },
+        "correct": 4,
+        "graded": 4,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P9",
+        "input": "loud electronic festival bangers, no acoustic",
+        "output": {
+          "genre": "edm",
+          "mood": "euphoric",
+          "energy": 1.0,
+          "likes_acoustic": false,
+          "confidence": 0.95
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": true,
+          "confidence": null
+        },
+        "correct": 4,
+        "graded": 4,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P10",
+        "input": "cozy coffee shop jazz",
+        "output": {
+          "genre": "jazz",
+          "mood": "relaxed",
+          "energy": 0.3,
+          "likes_acoustic": true,
+          "confidence": 0.95
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": false
+      },
+      {
+        "id": "P11",
+        "input": "confident rap for walking into a job interview",
+        "output": {
+          "genre": "rap",
+          "mood": "confident",
+          "energy": 0.8,
+          "likes_acoustic": false,
+          "confidence": 0.95
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P12",
+        "input": "nostalgic country songs for the drive home",
+        "output": {
+          "genre": "country",
+          "mood": "nostalgic",
+          "energy": 0.5,
+          "likes_acoustic": null,
+          "confidence": 0.95
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": null,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 2,
+        "graded": 2,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P13",
+        "input": "something gloomy and atmospheric",
+        "output": {
+          "genre": "ambient",
+          "mood": "moody",
+          "energy": 0.2,
+          "likes_acoustic": null,
+          "confidence": 0.7
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": false
+      },
+      {
+        "id": "P14",
+        "input": "upbeat songs",
+        "output": {
+          "genre": null,
+          "mood": "carefree",
+          "energy": 0.8,
+          "likes_acoustic": null,
+          "confidence": 0.6
+        },
+        "fields": {
+          "genre": null,
+          "mood": false,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 1,
+        "graded": 2,
+        "all_correct": false,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P15",
+        "input": "a song",
+        "output": {
+          "genre": null,
+          "mood": null,
+          "energy": null,
+          "likes_acoustic": null,
+          "confidence": 0.0
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": null,
+          "likes_acoustic": null,
+          "confidence": true
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P16",
+        "input": "chill but not boring, a little danceable",
+        "output": {
+          "genre": "house",
+          "mood": "chill",
+          "energy": 0.5,
+          "likes_acoustic": false,
+          "confidence": 0.7
+        },
+        "fields": {
+          "genre": null,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 2,
+        "graded": 2,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      }
+    ]
+  },
+  "few-shot Gemini": {
+    "summary": {
+      "style": "few-shot Gemini",
+      "field_accuracy": 1.0,
+      "fields": "47/47",
+      "cases_all_correct": "16/16",
+      "invented_moods": 0,
+      "errors": 0,
+      "consistency": "13/16",
+      "per_field": {
+        "genre": "13/13",
+        "mood": "16/16",
+        "energy": "14/14",
+        "likes_acoustic": "3/3",
+        "confidence": "1/1"
+      }
+    },
+    "rows": [
+      {
+        "id": "P1",
+        "input": "mellow acoustic guitar songs for a lazy sunday",
+        "output": {
+          "genre": null,
+          "mood": "relaxed",
+          "energy": 0.4,
+          "likes_acoustic": true,
+          "confidence": 0.9
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": true,
+          "confidence": null
+        },
+        "correct": 4,
+        "graded": 4,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": false
+      },
+      {
+        "id": "P2",
+        "input": "aggressive music to blow off steam",
+        "output": {
+          "genre": null,
+          "mood": "aggressive",
+          "energy": 0.95,
+          "likes_acoustic": null,
+          "confidence": 0.9
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P3",
+        "input": "focus music for coding late at night",
+        "output": {
+          "genre": null,
+          "mood": "focused",
+          "energy": 0.35,
+          "likes_acoustic": null,
+          "confidence": 0.8
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": false
+      },
+      {
+        "id": "P4",
+        "input": "feel-good summer hits",
+        "output": {
+          "genre": "pop",
+          "mood": "carefree",
+          "energy": 0.8,
+          "likes_acoustic": null,
+          "confidence": 0.8
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": false
+      },
+      {
+        "id": "P5",
+        "input": "heartbreak ballads",
+        "output": {
+          "genre": null,
+          "mood": "sad",
+          "energy": 0.3,
+          "likes_acoustic": null,
+          "confidence": 0.8
+        },
+        "fields": {
+          "genre": null,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 2,
+        "graded": 2,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P6",
+        "input": "salsa night",
+        "output": {
+          "genre": "latin",
+          "mood": "playful",
+          "energy": 0.8,
+          "likes_acoustic": null,
+          "confidence": 0.8
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P7",
+        "input": "dreamy 80s synths for a night drive",
+        "output": {
+          "genre": "synthwave",
+          "mood": "nostalgic",
+          "energy": 0.6,
+          "likes_acoustic": false,
+          "confidence": 0.85
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P8",
+        "input": "classical piano to fall asleep to",
+        "output": {
+          "genre": "classical",
+          "mood": "peaceful",
+          "energy": 0.2,
+          "likes_acoustic": true,
+          "confidence": 0.9
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": true,
+          "confidence": null
+        },
+        "correct": 4,
+        "graded": 4,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P9",
+        "input": "loud electronic festival bangers, no acoustic",
+        "output": {
+          "genre": "edm",
+          "mood": "euphoric",
+          "energy": 0.95,
+          "likes_acoustic": false,
+          "confidence": 0.9
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": true,
+          "confidence": null
+        },
+        "correct": 4,
+        "graded": 4,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P10",
+        "input": "cozy coffee shop jazz",
+        "output": {
+          "genre": "jazz",
+          "mood": "relaxed",
+          "energy": 0.4,
+          "likes_acoustic": null,
+          "confidence": 0.85
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P11",
+        "input": "confident rap for walking into a job interview",
+        "output": {
+          "genre": "hip hop",
+          "mood": "confident",
+          "energy": 0.6,
+          "likes_acoustic": null,
+          "confidence": 0.9
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P12",
+        "input": "nostalgic country songs for the drive home",
+        "output": {
+          "genre": "country",
+          "mood": "nostalgic",
+          "energy": 0.6,
+          "likes_acoustic": null,
+          "confidence": 0.9
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": null,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 2,
+        "graded": 2,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P13",
+        "input": "something gloomy and atmospheric",
+        "output": {
+          "genre": "ambient",
+          "mood": "melancholic",
+          "energy": 0.3,
+          "likes_acoustic": null,
+          "confidence": 0.75
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P14",
+        "input": "upbeat songs",
+        "output": {
+          "genre": null,
+          "mood": "happy",
+          "energy": 0.8,
+          "likes_acoustic": null,
+          "confidence": 0.7
+        },
+        "fields": {
+          "genre": null,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 2,
+        "graded": 2,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P15",
+        "input": "a song",
+        "output": {
+          "genre": null,
+          "mood": null,
+          "energy": null,
+          "likes_acoustic": null,
+          "confidence": 0.1
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": null,
+          "likes_acoustic": null,
+          "confidence": true
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P16",
+        "input": "chill but not boring, a little danceable",
+        "output": {
+          "genre": null,
+          "mood": "chill",
+          "energy": 0.65,
+          "likes_acoustic": null,
+          "confidence": 0.75
+        },
+        "fields": {
+          "genre": null,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 2,
+        "graded": 2,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      }
+    ]
+  },
+  "keyword (offline)": {
+    "summary": {
+      "style": "keyword (offline)",
+      "field_accuracy": 0.66,
+      "fields": "31/47",
+      "cases_all_correct": "5/16",
+      "invented_moods": 0,
+      "errors": 0,
+      "consistency": "n/a",
+      "per_field": {
+        "genre": "13/13",
+        "mood": "8/16",
+        "energy": "7/14",
+        "likes_acoustic": "2/3",
+        "confidence": "1/1"
+      }
+    },
+    "rows": [
+      {
+        "id": "P1",
+        "input": "mellow acoustic guitar songs for a lazy sunday",
+        "output": {
+          "genre": "folk",
+          "mood": null,
+          "energy": 0.25,
+          "likes_acoustic": true,
+          "confidence": 0.7
+        },
+        "fields": {
+          "genre": true,
+          "mood": false,
+          "energy": true,
+          "likes_acoustic": true,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 4,
+        "all_correct": false,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P2",
+        "input": "aggressive music to blow off steam",
+        "output": {
+          "genre": null,
+          "mood": "aggressive",
+          "energy": null,
+          "likes_acoustic": null,
+          "confidence": 0.3
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": false,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 2,
+        "graded": 3,
+        "all_correct": false,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P3",
+        "input": "focus music for coding late at night",
+        "output": {
+          "genre": null,
+          "mood": "focused",
+          "energy": 0.4,
+          "likes_acoustic": true,
+          "confidence": 0.7
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P4",
+        "input": "feel-good summer hits",
+        "output": {
+          "genre": null,
+          "mood": null,
+          "energy": null,
+          "likes_acoustic": null,
+          "confidence": 0
+        },
+        "fields": {
+          "genre": true,
+          "mood": false,
+          "energy": false,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 1,
+        "graded": 3,
+        "all_correct": false,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P5",
+        "input": "heartbreak ballads",
+        "output": {
+          "genre": null,
+          "mood": null,
+          "energy": null,
+          "likes_acoustic": null,
+          "confidence": 0
+        },
+        "fields": {
+          "genre": null,
+          "mood": false,
+          "energy": false,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 0,
+        "graded": 2,
+        "all_correct": false,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P6",
+        "input": "salsa night",
+        "output": {
+          "genre": "latin",
+          "mood": null,
+          "energy": null,
+          "likes_acoustic": null,
+          "confidence": 0.3
+        },
+        "fields": {
+          "genre": true,
+          "mood": false,
+          "energy": false,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 1,
+        "graded": 3,
+        "all_correct": false,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P7",
+        "input": "dreamy 80s synths for a night drive",
+        "output": {
+          "genre": "synthwave",
+          "mood": "moody",
+          "energy": 0.7,
+          "likes_acoustic": false,
+          "confidence": 1.0
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P8",
+        "input": "classical piano to fall asleep to",
+        "output": {
+          "genre": "classical",
+          "mood": null,
+          "energy": null,
+          "likes_acoustic": null,
+          "confidence": 0.3
+        },
+        "fields": {
+          "genre": true,
+          "mood": false,
+          "energy": false,
+          "likes_acoustic": false,
+          "confidence": null
+        },
+        "correct": 1,
+        "graded": 4,
+        "all_correct": false,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P9",
+        "input": "loud electronic festival bangers, no acoustic",
+        "output": {
+          "genre": "edm",
+          "mood": null,
+          "energy": 0.85,
+          "likes_acoustic": false,
+          "confidence": 0.7
+        },
+        "fields": {
+          "genre": true,
+          "mood": false,
+          "energy": true,
+          "likes_acoustic": true,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 4,
+        "all_correct": false,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P10",
+        "input": "cozy coffee shop jazz",
+        "output": {
+          "genre": "jazz",
+          "mood": "melancholic",
+          "energy": 0.35,
+          "likes_acoustic": true,
+          "confidence": 1.0
+        },
+        "fields": {
+          "genre": true,
+          "mood": false,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 2,
+        "graded": 3,
+        "all_correct": false,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P11",
+        "input": "confident rap for walking into a job interview",
+        "output": {
+          "genre": "rap",
+          "mood": "confident",
+          "energy": null,
+          "likes_acoustic": null,
+          "confidence": 0.6
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": false,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 2,
+        "graded": 3,
+        "all_correct": false,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P12",
+        "input": "nostalgic country songs for the drive home",
+        "output": {
+          "genre": "country",
+          "mood": "nostalgic",
+          "energy": 0.7,
+          "likes_acoustic": false,
+          "confidence": 1.0
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": null,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 2,
+        "graded": 2,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P13",
+        "input": "something gloomy and atmospheric",
+        "output": {
+          "genre": null,
+          "mood": "moody",
+          "energy": 0.35,
+          "likes_acoustic": true,
+          "confidence": 0.7
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P14",
+        "input": "upbeat songs",
+        "output": {
+          "genre": null,
+          "mood": null,
+          "energy": 0.85,
+          "likes_acoustic": null,
+          "confidence": 0.25
+        },
+        "fields": {
+          "genre": null,
+          "mood": false,
+          "energy": true,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 1,
+        "graded": 2,
+        "all_correct": false,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P15",
+        "input": "a song",
+        "output": {
+          "genre": null,
+          "mood": null,
+          "energy": null,
+          "likes_acoustic": null,
+          "confidence": 0
+        },
+        "fields": {
+          "genre": true,
+          "mood": true,
+          "energy": null,
+          "likes_acoustic": null,
+          "confidence": true
+        },
+        "correct": 3,
+        "graded": 3,
+        "all_correct": true,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      },
+      {
+        "id": "P16",
+        "input": "chill but not boring, a little danceable",
+        "output": {
+          "genre": null,
+          "mood": "chill",
+          "energy": null,
+          "likes_acoustic": null,
+          "confidence": 0.3
+        },
+        "fields": {
+          "genre": null,
+          "mood": true,
+          "energy": false,
+          "likes_acoustic": null,
+          "confidence": null
+        },
+        "correct": 1,
+        "graded": 2,
+        "all_correct": false,
+        "invented_mood": false,
+        "errors": [],
+        "consistent": true
+      }
+    ]
+  }
+}

@@ -1,4 +1,4 @@
-VibeMatch execution evidence (offline mode), generated 2026-11-15 23:25
+VibeMatch execution evidence (offline mode), generated 2026-11-15 23:43
 ========================================================================
 
 ## 1. End-to-end runs
@@ -237,7 +237,7 @@ VibeMatch ready (offline mode). Logs: logs/vibematch.jsonl
 ------------------------------------------------------------------------
 ## 5. Automated tests
 $ .venv/bin/python -m pytest -q
-.........................................................                [100%]
-57 passed in 0.09s
+....................................................................     [100%]
+68 passed in 0.09s
 
 ------------------------------------------------------------------------

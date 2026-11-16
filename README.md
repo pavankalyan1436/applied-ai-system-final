@@ -21,7 +21,7 @@ It worked only with exact labels: a "k-pop" fan got **zero** genre points, it ha
 | Control flow | Score, then sort | **Agent loop**: plan → retrieve → score → **verify (6 checks)** → retry with another strategy → explain |
 | Safety | None | **Guardrails** on input (injection, off-topic, empty, too long), on the parsed profile, and on output (hallucinated-song check) |
 | Uncertainty | None | **Confidence score** (0–1) plus **human-in-the-loop** clarifying questions and like/dislike feedback |
-| Evidence | 2 tests | **57 tests** + an **evaluation harness** (23 labeled cases, compared with the Module 3 baseline) + a JSON log of every run |
+| Evidence | 2 tests | **68 tests** + an **evaluation harness** (23 labeled cases, compared with the Module 3 baseline) + a JSON log of every run |
 
 ---
 
@@ -47,7 +47,7 @@ flowchart LR
 
 **How data flows:** a request passes the **input guardrail** and is **parsed** into a taste profile. The profile guardrail repairs bad values, and the **retriever** looks up related genres and moods, plus energy hints from activity notes, in `knowledge/`. If the agent isn't confident, it **asks the user** instead of guessing. Otherwise the **scorer** ranks the catalog, giving related labels partial credit and citing their source. **Verification** then checks the results, for example that every song exists in the catalog and the top pick fits the requested energy. If a check fails, the agent **retries** with a broader retrieval or an energy-first weighting and keeps the best attempt. Finally it writes an explanation, which is **rejected if it names a song that wasn't recommended**, and computes a confidence score.
 
-**Where humans and testing come in:** clarifying questions and like/dislike feedback (human-in-the-loop); `pytest` (57 tests using a fake LLM); `src/evaluate.py` (the reliability harness); and `logs/vibematch.jsonl` (a full trace of every run, for audits).
+**Where humans and testing come in:** clarifying questions and like/dislike feedback (human-in-the-loop); `pytest` (68 tests using a fake LLM); `src/evaluate.py` (the reliability harness); and `logs/vibematch.jsonl` (a full trace of every run, for audits).
 
 | Component | File |
 |---|---|
@@ -80,7 +80,7 @@ pip install -r requirements.txt
 echo "GEMINI_API_KEY=your-key-here" > .env
 ```
 
-The default model is `gemini-3.5-flash-lite`. Override it with `GEMINI_MODEL=...` in `.env`.
+The default model is `gemini-3.5-flash-lite` (override it with `GEMINI_MODEL=...`). The parser uses the **few-shot** prompt by default; set `GEMINI_PROMPT=zeroshot` to compare.
 
 ### Run it
 
@@ -89,9 +89,10 @@ python -m src.cli                                   # interactive: ask, answer q
 python -m src.cli "rainy day jazz"                  # one request
 python -m src.cli --trace "sleepy piano"            # show every agent step
 python -m src.cli --offline "happy pop"             # force offline mode (no Gemini)
-pytest                                              # 57 tests, no network needed
+pytest                                              # 68 tests, no network needed
 python -m src.evaluate                              # reliability harness (offline, deterministic)
 python -m src.evaluate --llm --repeat 2             # with Gemini, plus a consistency check
+python -m src.eval_parser                           # zero-shot vs few-shot parser experiment (Gemini, ~5 min)
 bash scripts/make_evidence.sh                       # regenerate eval/sample_runs_offline.txt
 python -m src.main                                  # the original Module 3 demo (unchanged output)
 ```
@@ -233,7 +234,7 @@ Confidence: 0.92   Strategy: baseline
 
 ## Testing summary
 
-**Results:** **57/57 automated tests pass** (offline, using a fake LLM). On the 23-case evaluation, the **agent passed 23/23 offline versus 13/23 for the original Module 3 recommender**. The baseline fails all 5 guardrail cases and all 3 vague requests, because it has no way to refuse or ask. Average confidence on answered requests was 0.89. Verification triggered a retry in 2 cases, and both ended correctly (one fixed, one honestly flagged).
+**Results:** **68/68 automated tests pass** (offline, using a fake LLM). On the 23-case evaluation, the **agent passed 23/23 offline versus 13/23 for the original Module 3 recommender**. The baseline fails all 5 guardrail cases and all 3 vague requests, because it has no way to refuse or ask. Average confidence on answered requests was 0.89. Verification triggered a retry in 2 cases, and both ended correctly (one fixed, one honestly flagged).
 <!-- gemini-summary:start -->
 **With Gemini** (each case run twice): **21/23 passed**, **0 hallucinated explanations**, and **21/23 cases gave identical results** across both runs. One rate-limit error was retried automatically. The 2 failures: *"reggaeton party"* ranked a reggae song first (Gemini picked the mood `carefree`, and the Latin song only reached #4), and *"acoustic folk for maximum energy"* is impossible in this catalog under Gemini's reading (acoustic + intense + energy 1.0). The agent keeps the folk song and **flags** the energy conflict, which the pre-written criterion counts as a fail. See [`eval/report_gemini.md`](eval/report_gemini.md).
 <!-- gemini-summary:end -->
@@ -261,6 +262,23 @@ The full per-case tables (input, criteria, result, confidence) are in [`eval/rep
 
 ---
 
+### Specialization: a few-shot parser (stretch)
+
+The Gemini parser has two prompts in [`src/llm_client.py`](src/llm_client.py): a plain **zero-shot** prompt, and a **few-shot** prompt with 6 worked examples plus strict rules (moods must come from the catalog, a fixed energy scale, `null` for anything the user didn't mention). I compared them on **16 held-out requests** ([`eval/parse_cases.json`](eval/parse_cases.json)), each with gold labels that list every acceptable answer, running each request twice per prompt. A test checks that no few-shot example appears in either evaluation set. That test caught my first draft, which reused the vague request "music" (main-eval case V3) as an example.
+
+| Metric | Zero-shot Gemini | **Few-shot Gemini** | Keyword parser (offline) |
+|---|---|---|---|
+| Field accuracy | 96% (45/47) | **100% (47/47)** | 66% (31/47) |
+| Requests fully correct | 14/16 | **16/16** | 5/16 |
+| Mood correct | 14/16 | **16/16** | 8/16 |
+| Guessed `likes_acoustic` with no hint in the request | 7/16 | **0/16** (set only on the 4 that mention or clearly imply the sound) | n/a |
+| Run-to-run consistency | **14/16** | 13/16 | deterministic |
+
+**How the output differs:** the few-shot prompt follows its rules. It leaves unmentioned fields empty instead of guessing ("chill but not boring" → zero-shot invented genre `house`; few-shot left genre empty), and picks moods that better match the gold labels ("upbeat songs" → `happy` rather than `carefree`; "salsa night" → `playful` rather than `carefree`).
+**Honest limits:** the gain is 2 fields out of 47 on a small set, and few-shot was slightly *less* consistent. Few-shot is the default now. The main 23-case Gemini evaluation above was run **before** this change, with the zero-shot prompt. Full per-request table: [`eval/report_parser.md`](eval/report_parser.md).
+
+---
+
 ## Reflection
 
 This project taught me that most of the work in an applied AI system is *around* the model: deciding what the model is allowed to decide, checking what it returns, and having a plan for when it fails or is unavailable. The LLM turned out to be the least reliable part of my system (rate limits, invented labels like the mood "nice"), so the design centers on verification, fallbacks and honest reporting. My full responsible-AI reflection (limitations, misuse, surprises, AI collaboration) is in [`model_card.md`](model_card.md).
@@ -278,7 +296,7 @@ src/            agent, retriever, guardrails, parser, llm_client, recommender, c
 knowledge/      RAG notes: genres.md, moods.md, activities.md
 data/songs.csv  20-song catalog
 eval/           cases.json, reports (markdown + JSON), sample_runs_*.txt evidence
-tests/          57 pytest tests
+tests/          68 pytest tests
 diagrams/       architecture.mmd (Mermaid source), architecture.md (rendered)
 scripts/        make_evidence.sh, dump_traces.py
 docs/           original Module 3 README

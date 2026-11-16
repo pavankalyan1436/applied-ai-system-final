@@ -106,7 +106,20 @@ What I would add for real users: a moderation API in place of regex patterns, ra
 | G5 | "pop pop pop pop pop pop pop pop pop pop pop p..." | status blocked | Pass (blocked) | 0.00 | Fail: status was ok |
 <!-- eval-table:end -->
 
-**Automated tests:** 57 pytest tests (guardrails, parser, retriever, agent loop, evaluation harness, Gemini retry), all passing, with no network needed.
+**Automated tests:** 68 pytest tests (guardrails, parser, retriever, agent loop, evaluation harness, Gemini retry, few-shot prompt and fairness checks), all passing, with no network needed.
+
+### Specialization: zero-shot vs few-shot parser
+
+16 held-out requests ([`eval/parse_cases.json`](eval/parse_cases.json)), run twice per prompt, with fields scored against gold labels ([`eval/report_parser.md`](eval/report_parser.md)). No few-shot example appears in any test set, and a test enforces this.
+
+| Metric | Zero-shot Gemini | Few-shot Gemini | Keyword (offline) |
+|---|---|---|---|
+| Field accuracy | 96% (45/47) | **100% (47/47)** | 66% (31/47) |
+| Requests fully correct | 14/16 | **16/16** | 5/16 |
+| Guessed `likes_acoustic` with no hint in the request | 7/16 | **0/16** | n/a |
+| Run-to-run consistency | **14/16** | 13/16 | deterministic |
+
+The few-shot prompt is measurably more rule-following (it doesn't fill in unmentioned fields, and picks better-fitting moods), but the accuracy gain is small and consistency slightly dropped. The main 23-case Gemini evaluation was measured with the zero-shot prompt, before few-shot became the default.
 
 ### Human evaluation
 

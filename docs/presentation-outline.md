@@ -60,7 +60,7 @@ Run the demo script below. **If anything breaks, switch to the backup** (the tex
 | Vague, should ask | 3/3 | 3/3 | 0/3 |
 | Hallucinated explanations | 0 | 0 | n/a |
 
-Plus 57 automated tests that run without an API key.
+Plus 68 automated tests that run without an API key.
 
 **Say:**
 > "For **reliability testing**, I wrote 23 test requests *with pass criteria written before I ran them*, and I ran each one through both my agent and the original Module 3 version. The baseline fails every guardrail and vague case, because it has no way to say no or to ask.
