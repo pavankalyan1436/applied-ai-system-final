@@ -29,6 +29,33 @@ def tokenize(text: str) -> List[str]:
     return TOKEN_RE.findall(text.lower())
 
 
+SUFFIXES = ("ing", "ies", "ers", "er", "ed", "es", "s", "y")
+
+
+def stem(token: str) -> str:
+    """
+    Tiny suffix-stripping stemmer so word forms meet: sleepy/sleeping -> sleep,
+    running -> run, studying/study -> stud. It only needs to be consistent,
+    because queries and documents are stemmed the same way.
+    """
+    changed = True
+    while changed and "-" not in token:
+        changed = False
+        for suf in SUFFIXES:
+            if token.endswith(suf) and len(token) - len(suf) >= 3 and not token.endswith("ss"):
+                token = token[: -len(suf)]
+                if len(token) >= 4 and token[-1] == token[-2]:  # runn -> run
+                    token = token[:-1]
+                changed = True
+                break
+    return token
+
+
+def terms(text: str) -> List[str]:
+    """Tokens after stemming; what the TF-IDF index actually compares."""
+    return [stem(t) for t in tokenize(text)]
+
+
 @dataclass
 class Doc:
     """One knowledge-base section, e.g. the '## pop' notes in genres.md."""
@@ -87,7 +114,7 @@ class Retriever:
     def __init__(self, docs: Optional[List[Doc]] = None):
         self.docs = docs if docs is not None else load_knowledge()
         self.by_name = {(d.type, d.name): d for d in self.docs}
-        doc_tokens = [tokenize(d.text) for d in self.docs]
+        doc_tokens = [terms(d.text) for d in self.docs]
         n = len(self.docs)
         df = Counter(tok for toks in doc_tokens for tok in set(toks))
         self.idf = {tok: math.log((n + 1) / (count + 1)) + 1 for tok, count in df.items()}
@@ -101,7 +128,7 @@ class Retriever:
 
     def retrieve(self, query: str, k: int = 3, min_score: float = 0.15) -> List[Tuple[Doc, float]]:
         """Return up to k (doc, similarity) pairs above min_score, best first."""
-        qvec = self._vectorize(tokenize(query))
+        qvec = self._vectorize(terms(query))
         scored = []
         for doc, dvec in zip(self.docs, self.vectors):
             sim = sum(w * dvec.get(t, 0.0) for t, w in qvec.items())
@@ -126,7 +153,9 @@ class RetrievalContext:
     retrieved: List[Tuple[str, float]] = field(default_factory=list)  # (source, similarity)
 
 
-def build_context(retriever: Retriever, prefs: Dict, query: str = "") -> RetrievalContext:
+def build_context(
+    retriever: Retriever, prefs: Dict, query: str = "", k: int = 3, min_score: float = 0.15
+) -> RetrievalContext:
     """
     Gather related genres/moods and hints for a profile (and optional free text).
 
@@ -141,7 +170,7 @@ def build_context(retriever: Retriever, prefs: Dict, query: str = "") -> Retriev
         if doc:
             docs.append(doc)
     if query:
-        for doc, sim in retriever.retrieve(query):
+        for doc, sim in retriever.retrieve(query, k=k, min_score=min_score):
             ctx.retrieved.append((doc.source, round(sim, 3)))
             if doc not in docs:
                 docs.append(doc)

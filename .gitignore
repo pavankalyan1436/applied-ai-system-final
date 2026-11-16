@@ -13,3 +13,9 @@ venv/
 
 # Pytest cache
 .pytest_cache/
+
+# Secrets (API keys)
+.env
+
+# Agent run logs
+logs/
